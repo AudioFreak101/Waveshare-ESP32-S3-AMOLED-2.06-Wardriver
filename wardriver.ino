@@ -13,24 +13,19 @@
 #include <time.h>
 
 // ============================================================================
-// DISPLAY CONFIGURATION
+// DISPLAY CONFIGURATION - Waveshare ESP32-S3 AMOLED 2.06"
 // ============================================================================
-#define GFX_BL 48  // Backlight pin for ESP32-S3 AMOLED
+#define GFX_BL 48  // Backlight pin
 
-Arduino_DataBus *bus = new Arduino_ESP32S3_Parallel8(
-    40,  // DC
-    8,   // CS
-    6, 7, 15, 16, 17, 18, 19, 20,  // D0-D7
-    9,   // WR
-    46   // RD
-);
+// SPI pins for Waveshare ESP32-S3 AMOLED
+#define TFT_CS 12
+#define TFT_DC 11
+#define TFT_RST 13
+#define TFT_SCLK 14
+#define TFT_MOSI 47
 
-Arduino_GFX *gfx = new Arduino_ST7789(
-    bus,
-    -1,  // RST (no reset needed)
-    3,   // Rotation (3 = 270°)
-    true // IPS
-);
+Arduino_DataBus *bus = new Arduino_SPI(TFT_DC, TFT_CS, TFT_SCLK, TFT_MOSI, -1);
+Arduino_GFX *gfx = new Arduino_ST7789(bus, TFT_RST, 0, true, 240, 536);
 
 // ============================================================================
 // SD CARD CONFIGURATION
@@ -147,7 +142,7 @@ void initSDCard() {
     // Write CSV header
     logFile = SD.open(logFileName, FILE_WRITE);
     if (logFile) {
-        logFile.println("BSSID,SSID,Channel,RSSI,Encryption,FirstSeen");
+        logFile.println("BSSID,SSID,Channel,RSSI,Encryption");
         logFile.close();
         Serial.printf("Log file created: %s\n", logFileName.c_str());
     } else {
