@@ -1,0 +1,24 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+
+# Arduino IDE
+.vscode/
+.pio/
+*.elf
+*.bin
+
+# IDE
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+
+# Secrets
+secrets.h
+credentials.h
